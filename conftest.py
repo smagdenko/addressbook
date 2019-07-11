@@ -17,5 +17,9 @@ def app(driver):
     global fixture
     if fixture is None:
         fixture = Applications(driver)
+        fixture.login(user="admin", password="secret")
+    else:
+        if not fixture.is_valid():
+            fixture = Applications(driver)
+            fixture.login(user="admin", password="secret")
     return fixture
-

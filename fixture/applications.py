@@ -4,7 +4,7 @@ class Applications:
 
     def __init__(self, driver):
         self.driver=driver
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(5)
         self.group=GroupSession(self)
 
     def open_homepage(self):
@@ -26,3 +26,10 @@ class Applications:
 
     def destroy(self):
         self.driver.quit()
+
+    def is_valid(self):
+        try:
+            self.wd.current_url
+            return True
+        except:
+            return False

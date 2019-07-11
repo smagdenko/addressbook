@@ -10,8 +10,7 @@ from model.group import Group
 
 
 def test_add_group(app):
-    app.login(user="admin", password="secret")
-    app.group.create(Group(name="qweer", header="zxccxcv", footer="vcmvncmvn"))
+    app.group.create(Group(name="new", header="bbbbbbbbbbb", footer="vcmvncmvn"))
     # app.group.delete()
     app.logout()
 

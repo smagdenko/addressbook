@@ -18,7 +18,7 @@ class GroupSession:
         self.change_field_text("group_name", group.name)
         self.change_field_text("group_header", group.header)
         self.change_field_text("group_footer", group.footer)
-        driver.find_element_by_xpath(".//*[@name=\"update\"]").click()
+        driver.find_element_by_xpath(".//*[@type=\"submit\"]").click()
 
 
     def change_field_text(self, field_name, text):
