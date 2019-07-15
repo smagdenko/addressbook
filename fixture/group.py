@@ -33,7 +33,7 @@ class GroupSession:
         if not (driver.current_url.endswith("/groups") and len(driver.find_elements_by_xpath(".//*[@ name=\"new\"]"))>0):
             driver.find_element_by_xpath("//*[@id='nav']//a[contains(text(),'groups')]").click()
 
-    def delete(self):
+    def delete_all_groups(self):
         driver = self.app.driver
         self.open_group_page()
         groups=driver.find_elements_by_xpath("//*[@id='content']//span")
@@ -42,6 +42,13 @@ class GroupSession:
             driver.find_element_by_xpath("//*[@id='content']//span[1]").click()
             driver.find_element_by_xpath("//input[2][@name='delete']").click()
             driver.find_element_by_xpath(".//*[@id='content']//a[contains(.,'group page')]").click()
+
+    def delete_first_group(self):
+        driver = self.app.driver
+        self.open_group_page()
+        driver.find_element_by_xpath("//*[@id='content']//span[1]/input").click()
+        driver.find_element_by_xpath("//input[2][@name='delete']").click()
+        driver.find_element_by_xpath(".//*[@id='content']//a[contains(.,'group page')]").click()
 
     def modify_first_group(self, new_group_data):
         driver = self.app.driver
