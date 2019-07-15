@@ -1,3 +1,6 @@
+from model.group import Group
+
+
 class GroupSession:
 
     def __init__(self, app):
@@ -52,3 +55,15 @@ class GroupSession:
         driver = self.app.driver
         self.open_group_page()
         return len(driver.find_elements_by_xpath("//*[@name=\"selected[]\"]"))
+
+    def get_groups_list(self):
+        driver = self.app.driver
+        self.open_group_page()
+        groups = []
+        for element in driver.find_elements_by_xpath("//*[@id='content']//span"):
+            text = element.text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            groups.append(Group(name=text, id=id))
+        return groups
+
+
