@@ -1,11 +1,12 @@
 from fixture.group import GroupSession
 
+
 class Applications:
 
     def __init__(self, driver):
         self.driver=driver
         # self.driver.implicitly_wait(5)
-        self.group=GroupSession(self)
+        self.group = GroupSession(self)
 
     def open_homepage(self):
         driver = self.driver
