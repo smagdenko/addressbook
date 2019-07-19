@@ -44,9 +44,15 @@ class GroupSession:
             driver.find_element_by_xpath(".//*[@id='content']//a[contains(.,'group page')]").click()
 
     def delete_first_group(self):
+        self.delete_group_by_index(0)
+
+    def delete_group_by_index(self, index):
         driver = self.app.driver
         self.open_group_page()
-        driver.find_element_by_xpath("//*[@id='content']//span[1]/input").click()
+        list_el = driver.find_elements_by_xpath("//*[@id='content']//span//input")#[index].click()
+        my_el_to_click = list_el[index]
+        my_el_to_click.click()
+
         driver.find_element_by_xpath("//input[2][@name='delete']").click()
         driver.find_element_by_xpath(".//*[@id='content']//a[contains(.,'group page')]").click()
 
