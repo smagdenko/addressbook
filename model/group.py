@@ -1,3 +1,5 @@
+from sys import maxsize
+
 
 class Group:
 
@@ -8,4 +10,13 @@ class Group:
         self.id = id
 
     def __eq__(self, other):
-        return self.name == other.name and self.id == other.id
+        return (self.id == other.id or self.id is None or other.id is None) and self.name == other.name
+
+    def __repr__(self):
+        return "%s:%s" % (self.id, self.name)
+
+    def id_or_max(gr):
+        if gr.id:
+            return int(gr.id)
+        else:
+            return maxsize
