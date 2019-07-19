@@ -13,6 +13,7 @@ def test_add_group(app):
     old_groups.append(group)
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
+
 def test_add_groups(app):
     r = RandomWords()
     for _ in range(3):
