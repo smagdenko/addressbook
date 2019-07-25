@@ -1,7 +1,7 @@
 from random import randrange
 
 from model.group import Group
-from fixture.group import GroupSession
+from fixture.group_page import GroupSession
 
 
 def test_delete_group(app):
