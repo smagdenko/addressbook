@@ -1,5 +1,6 @@
 from model.contacts import Contacts
 
+
 class ContactsHelper:
 
     def __init__(self, app):
@@ -19,6 +20,9 @@ class ContactsHelper:
         self.change_field_text("firstname", contacts.first_name)
         self.change_field_text("lastname", contacts.last_name)
         self.change_field_text("mobile", contacts.mobile)
+        self.change_field_text("email", contacts.mail_1)
+        self.change_field_text("email2", contacts.mail_2)
+        self.change_field_text("email3", contacts.mail_3)
         driver.find_element_by_xpath('.//*[@name="notes"]/following-sibling::input').click()
 
 

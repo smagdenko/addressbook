@@ -1,4 +1,5 @@
-from fixture.group import GroupSession
+from fixture.group_page import GroupSession
+from fixture.contacts_page import ContactsHelper
 
 
 class Applications:
@@ -7,6 +8,7 @@ class Applications:
         self.driver=driver
         # self.driver.implicitly_wait(5)
         self.group = GroupSession(self)
+        self.contact = ContactsHelper(self)
 
     def open_homepage(self):
         driver = self.driver
