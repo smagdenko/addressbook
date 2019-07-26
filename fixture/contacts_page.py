@@ -25,7 +25,6 @@ class ContactsHelper:
         self.change_field_text("email3", contacts.mail_3)
         driver.find_element_by_xpath('.//*[@name="notes"]/following-sibling::input').click()
 
-
     def change_field_text(self, field_name, text):
         driver = self.app.driver
         if text is not None:
@@ -33,12 +32,24 @@ class ContactsHelper:
             driver.find_element_by_name(field_name).clear()
             driver.find_element_by_name(field_name).send_keys(text)
 
-    def get_groups_list(self):
+    contact_cache = None
+
+    def get_contacts_list(self):
         driver = self.app.driver
         self.open_contacts_page()
         contacts = []
-        for element in driver.find_elements_by_xpath("//*[@id='content']//span"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            contacts.append(Contacts(name=text, id=id))
-        return contacts
+        for element in driver.find_elements_by_xpath('.//*[@name="entry"]'):
+            firstname = element[3].text
+            lastname = element[2].text
+            # id = element.find_element_by_name("selected[]").get_attribute("value")
+            id = element[0].find_element_by_name("input").get_attribute("value")
+            self.contact_cache.append(Contacts(firstname=firstname, lastname=lastname, id=id))
+        return list(self.contact_cache)
+
+    def open_contact_to_edit_by_index(self, index):
+        driver = self.app.driver
+        row = driver.find_elements_by_xpath(".//*[@id='maintable']//td[7]")[index]
+        cell = row.find_element_by_name("entry")
+        cell.find_element_by_tag_name('a').click()
+
+
