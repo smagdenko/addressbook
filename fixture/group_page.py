@@ -45,6 +45,7 @@ class GroupSession:
 
     def delete_first_group(self):
         self.delete_group_by_index(0)
+        self.group_cache = None
 
     def delete_group_by_index(self, index):
         driver = self.app.driver
@@ -55,6 +56,7 @@ class GroupSession:
 
         driver.find_element_by_xpath("//input[2][@name='delete']").click()
         driver.find_element_by_xpath(".//*[@id='content']//a[contains(.,'group page')]").click()
+        self.group_cache = None
 
     def modify_first_group(self, new_group_data):
         driver = self.app.driver
@@ -63,20 +65,24 @@ class GroupSession:
         driver.find_element_by_xpath("//input[3][@name='edit']").click()
         self.fill_group_name(new_group_data)
         driver.find_element_by_xpath(".//*[@id='content']//a[contains(.,'group page')]").click()
+        self.group_cache = None
 
     def count(self):
         driver = self.app.driver
         self.open_group_page()
         return len(driver.find_elements_by_xpath("//*[@name=\"selected[]\"]"))
 
+    group_cache = None
+
     def get_groups_list(self):
-        driver = self.app.driver
-        self.open_group_page()
-        groups = []
-        for element in driver.find_elements_by_xpath("//*[@id='content']//span"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            groups.append(Group(name=text, id=id))
-        return groups
+        if self.group_cache is None:
+            driver = self.app.driver
+            self.open_group_page()
+            groups = []
+            for element in driver.find_elements_by_xpath("//*[@id='content']//span"):
+                text = element.text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.group.cach.append(Group(name=text, id=id))
+        return list(self.group_cache)   # return copy of <group_cache>
 
 
