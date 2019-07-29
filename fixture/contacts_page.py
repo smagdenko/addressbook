@@ -39,30 +39,33 @@ class ContactsHelper:
             driver = self.app.driver
             # self.open_contacts_page()
             self.contact_cache = []
-            for element in driver.find_elements_by_xpath('//*[@name="entry"]'):
+            for row in driver.find_elements_by_xpath('//*[@name="entry"]'):
+                element = driver.find_elements_by_tag_name("td")
                 firstname = element[3].text
                 lastname = element[2].text
-                id = element[0].find_element_by_name("input").get_attribute("value")
-                all_mails = element[5].text.splitlines()
-                self.contact_cache.append(Contacts(firstname=firstname, lastname=lastname, id=id,
+                id = element[1].find_element_by_xpath("//input[@name='selected[]']").get_attribute("value")
+                all_mails = element[4].text.splitlines()
+                self.contact_cache.append(Contacts(first_name=firstname, last_name=lastname, id=id,
                                                     email_1=all_mails[0], email_2=all_mails[1], email_3=all_mails[2]))
         return list(self.contact_cache)
 
     def open_contact_to_edit_by_index(self, index):
         driver = self.app.driver
-        row = driver.find_elements_by_xpath(".//*[@id='maintable']//td[7]")[index]
-        cell = row.find_element_by_name("entry")
-        cell.find_element_by_tag_name('a').click()
+        # row = driver.find_elements_by_xpath(".//*[@id='maintable']//td[7]")[index]
+        # cell = row.find_element_by_name("entry")
+        # cell.find_element_by_tag_name('a').click()
+
+        driver.find_element_by_xpath('//*[@name="entry"][%s]//td[8]//img' % index).click()
 
     def get_info_from_edit_page(self, index):
         driver = self.app.driver
         self.open_contact_to_edit_by_index(index)
-        firstname = driver.find_element_by_name("firstname").attribute("value")
-        lastname = driver.find_element_by_name("lastname").attribute("value")
-        email_1 = driver.find_element_by_name("email").attribute("value")
-        email_2 = driver.find_element_by_name("email2").attribute("value")
-        email_3 = driver.find_element_by_name("email3").attribute("value")
-        return Contacts(firstname=firstname, lastname=lastname, email_1=email_1, email_2=email_2, email_3=email_3)
+        firstname = driver.find_element_by_name("firstname").get_attribute("value")
+        lastname = driver.find_element_by_name("lastname").get_attribute("value")
+        email_1 = driver.find_element_by_name("email").get_attribute("value")
+        email_2 = driver.find_element_by_name("email2").get_attribute("value")
+        email_3 = driver.find_element_by_name("email3").get_attribute("value")
+        return Contacts(first_name=firstname, last_name=lastname, email_1=email_1, email_2=email_2, email_3=email_3)
 
 
 
