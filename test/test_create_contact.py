@@ -16,5 +16,5 @@ def test_create_contact(app):
     mails = []
     for mail in mail_list:
         mails.append(str(mail) + "@mailer.com")
-    contact = Contacts(first_name=value[1], last_name=value[2], mobile=phone, mails=mails)
+    contact = Contacts(first_name=value[1], last_name=value[2], mobile=phone, mail_1=mails[1])
     app.contact.create(contact)
