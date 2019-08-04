@@ -19,10 +19,12 @@ class ContactsHelper:
         driver = self.app.driver
         self.change_field_text("firstname", contacts.first_name)
         self.change_field_text("lastname", contacts.last_name)
-        self.change_field_text("mobile", contacts.mobile)
-        self.change_field_text("email", contacts.mail_1)
-        self.change_field_text("email2", contacts.mail_2)
-        self.change_field_text("email3", contacts.mail_3)
+        self.change_field_text("mobile", contacts.mobile_phone)
+        self.change_field_text("home", contacts.home_phone)
+        self.change_field_text("work", contacts.work_phone)
+        self.change_field_text("email", contacts.email_1)
+        self.change_field_text("email2", contacts.email_2)
+        self.change_field_text("email3", contacts.email_3)
         driver.find_element_by_xpath('.//*[@name="notes"]/following-sibling::input').click()
 
     def change_field_text(self, field_name, text):
@@ -31,23 +33,6 @@ class ContactsHelper:
             driver.find_element_by_name(field_name).click()
             driver.find_element_by_name(field_name).clear()
             driver.find_element_by_name(field_name).send_keys(text)
-
-    contact_cache = None
-
-    def get_contacts_list(self):
-        if self.contact_cache is None:
-            driver = self.app.driver
-            # self.open_contacts_page()
-            self.contact_cache = []
-            for row in driver.find_elements_by_xpath('//*[@name="entry"]'):
-                element = driver.find_elements_by_tag_name("td")
-                firstname = element[3].text
-                lastname = element[2].text
-                id = element[1].find_element_by_xpath("//input[@name='selected[]']").get_attribute("value")
-                all_mails = element[4].text.splitlines()
-                self.contact_cache.append(Contacts(first_name=firstname, last_name=lastname, id=id,
-                                                    email_1=all_mails[0], email_2=all_mails[1], email_3=all_mails[2]))
-        return list(self.contact_cache)
 
     def open_contact_to_edit_by_index(self, index):
         driver = self.app.driver
@@ -65,8 +50,28 @@ class ContactsHelper:
         email_1 = driver.find_element_by_name("email").get_attribute("value")
         email_2 = driver.find_element_by_name("email2").get_attribute("value")
         email_3 = driver.find_element_by_name("email3").get_attribute("value")
-        return Contacts(first_name=firstname, last_name=lastname, email_1=email_1, email_2=email_2, email_3=email_3)
+        mobile = driver.find_element_by_name("mobile").get_attribute("value")
+        home = driver.find_element_by_name("home").get_attribute("value")
+        work = driver.find_element_by_name("work").get_attribute("value")
+        return Contacts(first_name=firstname, last_name=lastname, email_1=email_1, email_2=email_2, email_3=email_3,
+                        mobile_phone=mobile, home_phone=home, work_phone=work)
 
+    contact_cache = None
 
-
+    def get_contacts_list(self):
+        if self.contact_cache is None:
+            driver = self.app.driver
+            # self.open_contacts_page()
+            self.contact_cache = []
+            for row in driver.find_elements_by_xpath('//*[@name="entry"]'):
+                element = driver.find_elements_by_tag_name("td")
+                firstname = element[3].text
+                lastname = element[2].text
+                id = element[1].find_element_by_xpath("//input[@name='selected[]']").get_attribute("value")
+                all_mails = element[4].text.splitlines()
+                all_phones = element[5].text.splitlines()
+                self.contact_cache.append(Contacts(first_name=firstname, last_name=lastname, id=id,
+                                                    email_1=all_mails[0], email_2=all_mails[1], email_3=all_mails[2],
+                                                    work_phone=all_phones[2], home_phone=all_phones[0], mobile_phone=all_phones[1]))
+        return list(self.contact_cache)
 
